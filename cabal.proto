@@ -5,9 +5,7 @@ package cabal;
 service CabalRpc {
   rpc Echo (EchoRequest) returns (EchoResponse) {}
 
-  rpc EchoStream (EchoRequest) returns (stream EchoResponse) {}
-
-  rpc EchoInfiniteStream (EchoRequest) returns (stream EchoResponse) {}
+  rpc EchoInfinite(EchoRequest) returns (stream EchoResponse) {}
 
   rpc EchoErrorResponse (EchoRequest) returns (EchoResponse) {}
 }
