@@ -4,16 +4,190 @@ package cabal;
 
 service CabalRpc {
   rpc Echo (EchoRequest) returns (EchoResponse) {}
+   
+  rpc UserActivity(stream UserAction) returns (stream UserResponse) {};
 
-  rpc EchoInfinite(EchoRequest) returns (stream EchoResponse) {}
-
-  rpc EchoErrorResponse (EchoRequest) returns (EchoResponse) {}
+  rpc Trades(stream TradeEventsRequest) returns (stream TradeEventsResponse) {};
 }
-
 message EchoRequest {
-    string message = 1;
+  string message =1;
+}
+message EchoResponse {
+  string message =1;
+}
+message TradeEventsRequest{
+  oneof trade_events_request_kind {
+    TradeEventSub sub = 1;
+    Ping ping = 2;
+    Pong pong = 3;
+  }
+}
+message TradeEventSub {
+  string mint = 1;
 }
 
-message EchoResponse {
-    string message = 1;
+message TokenStatusRequest {
+  string mint = 1;
+}
+
+message TradeEventsResponse {
+  oneof trade_events_response_kind {
+    TradeEvent trade_event =1;
+    TokenStatus token_status =2;
+    StreamClosed closed = 3;
+    Ping ping = 4;
+    Pong pong = 5;
+  }
+}
+message StreamClosed {
+  string message =1;
+}
+message Ping {
+  int32 count = 1;
+}
+
+message Pong{
+  int32 count = 1;
+}
+
+
+message UserAction {
+  oneof user_action_kind {
+    Buy buy = 1;
+    Sell sell = 2;
+    GetTokenTradeStats get_token_trade_stats =3;
+    Ping ping = 4;
+    Pong pong = 5;
+  }
+}
+
+message UserResponse {
+  oneof user_response_kind {
+    TradeResponse trade_status = 1;
+    TokenTradeStats trade_stats = 2;
+    Ping ping = 3;
+    Pong pong = 4;
+  }
+}
+
+message GetTokenTradeStats {
+  string mint =1;
+}
+enum UserTradeStatus {
+  accepted = 0;
+  rejected = 1;
+}
+
+message TradeResponse {
+  UserTradeStatus status = 1; // "accepted", "rejected"
+  uint64 slot = 2;
+}
+
+
+
+message TokenStatus {
+    string mint = 1;
+    string pool_id = 2;
+    PoolKind pool_kind = 3;
+    MigrationStatus migration_status = 4;
+    uint64 supply = 5;
+    uint64 base_liq = 6;
+    uint64 quote_liq = 7;
+}
+enum MigrationStatus {
+  migrated = 0;
+  migrating = 1;
+  pre_migration = 2;
+  non_migratable = 3;
+}
+enum PoolKind {
+  pump = 0;
+  ray_amm = 1;
+  moonshot = 2;
+  meteora = 3;
+  ray_clmm = 4;
+  ray_cpmm = 5;
+}
+
+message TokenTradeStats {
+  string mint = 1;
+  uint64 token_balance = 2;
+  uint64 buy_qoute = 3;
+  uint64 sell_qoute = 4;
+  uint64 buy_base = 5;
+  uint64 sell_base = 6;
+  uint32 buys = 7;
+  uint32 sells = 8;
+  uint64 sol_balance =9;
+  uint64 last_traded_slot =10;
+}
+
+message TradeEvent {
+    uint64 index =1;
+    TradeEventKind kind =2;
+}
+
+message TradeEventKind {
+  oneof trade_type {
+    TradeEventData buy = 1;
+    TradeEventData sell = 2;
+    TradeEventData deposit = 3;
+    TradeEventData withdraw = 4;
+    BurnEventData burn_liq = 5;
+    BurnEventData burn_mint = 6;
+  }
+}
+
+message TradeEventData {
+  uint64 amount = 1;
+  uint64 base_liq = 2;
+  uint64 quote_liq = 3;
+}
+
+message BurnEventData {
+  uint64 amount = 1;
+  uint64 left = 2;
+}
+
+
+
+message Buy {
+  uint64 amount = 1;
+  string mint = 2;  // Pubkey as string (Base58 encoded)
+  string slippage = 3; // Decimal as string
+  uint64 tip = 4;
+  optional uint64 priority_fee = 5;
+  optional uint64 nonce = 6;
+  optional uint32 slot_latency = 7;
+  optional UnixTimestamp expire_at =8;
+}
+
+message Sell {
+  string amount = 1; // Decimal as string
+  string mint = 2;  // Pubkey as string (Base58 encoded)
+  string slippage = 3; // Decimal as string
+  uint64 tip = 4;
+  optional uint64 priority_fee = 5;
+  optional uint64 nonce = 6;
+  optional uint32 slot_latency = 7;
+  optional UnixTimestamp expire_at =8;
+}
+
+
+
+
+message Positions {}
+
+message TokenLimitOrders {}
+
+message PlaceLimitOrder {}
+
+message EditLimitOrder {}
+
+message DeleteLimitOrder {}
+
+message SetAutoOrders {}
+
+message UnixTimestamp {
+  int64 timestamp = 1;
 }
