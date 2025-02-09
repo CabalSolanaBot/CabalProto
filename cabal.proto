@@ -5,24 +5,32 @@ package cabal;
 service CabalRpc {
   rpc Echo (EchoRequest) returns (EchoResponse) {}
    
-  rpc UserActivity(stream UserAction) returns (stream UserResponse) {};
+  //rpc UserActivityBidi(stream UserAction) returns (stream UserResponse) {}
 
-  rpc Trades(stream TradeEventsRequest) returns (stream TradeEventsResponse) {};
+  //rpc TradesBidi(stream TradeEventsRequest) returns (stream TradeEventsResponse) {}
+
+  rpc UserActivityUni(UserActionSub) returns (stream UserResponse) {}
+
+  rpc TradesUni(TradeEventSub) returns (stream TradeEventResponse) {}
+
+
 }
+message TradeEventSub {}
+message UserActionSub {}
 message EchoRequest {
   string message =1;
 }
 message EchoResponse {
   string message =1;
 }
-message TradeEventsRequest{
-  oneof trade_events_request_kind {
-    TradeEventSub sub = 1;
+message TradeEventRequest {
+  oneof trade_event_request_kind {
+    TokenTradeEventSub sub = 1;
     Ping ping = 2;
     Pong pong = 3;
   }
 }
-message TradeEventSub {
+message TokenTradeEventSub {
   string mint = 1;
 }
 
@@ -30,8 +38,8 @@ message TokenStatusRequest {
   string mint = 1;
 }
 
-message TradeEventsResponse {
-  oneof trade_events_response_kind {
+message TradeEventResponse {
+  oneof trade_event_response_kind {
     TradeEvent trade_event =1;
     TokenStatus token_status =2;
     StreamClosed closed = 3;
@@ -173,7 +181,9 @@ message Sell {
   optional UnixTimestamp expire_at =8;
 }
 
-
+message UnixTimestamp {
+  int64 timestamp = 1;
+}
 
 
 message Positions {}
@@ -188,6 +198,3 @@ message DeleteLimitOrder {}
 
 message SetAutoOrders {}
 
-message UnixTimestamp {
-  int64 timestamp = 1;
-}
