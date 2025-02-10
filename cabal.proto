@@ -13,8 +13,25 @@ service CabalRpc {
 
   rpc TradesUni(TradeEventSub) returns (stream TradeEventResponse) {}
 
+  rpc SubscribeToken(TokenTradeEventSub) returns (TradeResponse) {}
+  rpc TradePing(Ping) returns (Pong) {}
+  rpc UserPing(Ping) returns (Pong) {}
+  rpc MarketSell(Sell) returns (TradeResponse) {}
+  rpc MarketBuy(Buy) returns (TradeResponse) {}
+  rpc GetTokenTradeStats(TokenTradeStatsCall) returns (TokenTradeStats) {}
 
 }
+
+message UserAction {
+  oneof user_action_kind {
+    Buy buy = 1;
+    Sell sell = 2;
+    TokenTradeStats token_trade_stats =3;
+    Ping ping = 4;
+    Pong pong = 5;
+  }
+}
+
 message TradeEventSub {}
 message UserActionSub {}
 message EchoRequest {
@@ -51,23 +68,15 @@ message StreamClosed {
   string message =1;
 }
 message Ping {
-  int32 count = 1;
+  uint64 count = 1;
 }
 
 message Pong{
-  int32 count = 1;
+  uint64 count = 1;
 }
 
 
-message UserAction {
-  oneof user_action_kind {
-    Buy buy = 1;
-    Sell sell = 2;
-    GetTokenTradeStats get_token_trade_stats =3;
-    Ping ping = 4;
-    Pong pong = 5;
-  }
-}
+
 
 message UserResponse {
   oneof user_response_kind {
@@ -78,7 +87,7 @@ message UserResponse {
   }
 }
 
-message GetTokenTradeStats {
+message TokenTradeStatsCall {
   string mint =1;
 }
 enum UserTradeStatus {
@@ -87,7 +96,6 @@ enum UserTradeStatus {
 }
 
 message TradeResponse {
-  UserTradeStatus status = 1; // "accepted", "rejected"
   uint64 slot = 2;
 }
 
@@ -128,28 +136,29 @@ message TokenTradeStats {
   uint32 sells = 8;
   uint64 sol_balance =9;
   uint64 last_traded_slot =10;
+  uint32 decimal = 11;
 }
+
+
 
 message TradeEvent {
-    uint64 index =1;
-    TradeEventKind kind =2;
-}
-
-message TradeEventKind {
-  oneof trade_type {
+  oneof trade_event_kind {
     TradeEventData buy = 1;
     TradeEventData sell = 2;
     TradeEventData deposit = 3;
     TradeEventData withdraw = 4;
-    BurnEventData burn_liq = 5;
-    BurnEventData burn_mint = 6;
+    TradeEventData migration_start =5;
+    TradeEventData migration_end =6;
+    BurnEventData burn_liq = 7;
+    BurnEventData burn_mint = 8;
   }
 }
 
 message TradeEventData {
-  uint64 amount = 1;
+  uint64 amount_sol =1;
   uint64 base_liq = 2;
   uint64 quote_liq = 3;
+  PoolKind pool_kind =4;
 }
 
 message BurnEventData {
@@ -160,9 +169,9 @@ message BurnEventData {
 
 
 message Buy {
-  uint64 amount = 1;
+  float amount = 1;
   string mint = 2;  // Pubkey as string (Base58 encoded)
-  string slippage = 3; // Decimal as string
+  float slippage = 3; // Decimal as string
   uint64 tip = 4;
   optional uint64 priority_fee = 5;
   optional uint64 nonce = 6;
@@ -171,9 +180,9 @@ message Buy {
 }
 
 message Sell {
-  string amount = 1; // Decimal as string
+  float amount = 1; // Decimal as string
   string mint = 2;  // Pubkey as string (Base58 encoded)
-  string slippage = 3; // Decimal as string
+  float slippage = 3; // Decimal as string
   uint64 tip = 4;
   optional uint64 priority_fee = 5;
   optional uint64 nonce = 6;
