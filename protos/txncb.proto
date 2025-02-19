@@ -1,0 +1,71 @@
+
+syntax = "proto3";
+
+package txncb;
+
+message LandedTxnState {
+    oneof state_type {
+        Failed failed = 1;
+        Confirmed confirmed = 2;
+    }
+}
+
+message Failed {
+    int32 slot_diff = 1;
+    TxnTips tips = 2;
+    uint32 cu = 3;
+    string err = 4;
+    string signature =5; 
+}
+
+message Confirmed {
+    int32 slot_diff = 1;
+    repeated ParsedTrade trades = 2;
+    TxnTips tips = 3;
+    uint32 cu = 4;
+    string signature =5; 
+}
+
+message ParsedTrade {
+    oneof trade_type {
+        Buy buy = 1;
+        Sell sell = 2;
+    }
+}
+
+message Buy {
+    string mint = 1;
+    string ticker = 2;
+    TokenLamports base = 3;
+    uint64 quote = 4;
+    Decimal mc = 5;
+    Decimal price = 6;
+}
+
+message Sell {
+    string mint = 1;
+    string ticker = 2;
+    TokenLamports tokens = 3;
+    uint64 quote = 4;
+    Decimal pnl = 5;
+    Decimal mc = 6;
+    Decimal price = 7;
+}
+
+message TokenLamports {
+    uint64 amount = 1;
+    uint32 decimals = 2;
+}
+
+message TxnTips {
+    uint64 priority = 1;
+    uint64 jito = 2;
+}
+
+message TransactionError {
+    string message = 1;
+}
+
+message Decimal {
+    string value = 1;
+}

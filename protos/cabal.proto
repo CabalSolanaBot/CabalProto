@@ -1,8 +1,11 @@
 syntax = "proto3";
 
+import "orders.proto";
+import "txncb.proto";
+
 package cabal;
 
-//import "orders.proto";
+
 
 service CabalRpc {
   rpc Echo (EchoRequest) returns (EchoResponse) {} // TEST ONLY NOT PROD
@@ -21,88 +24,11 @@ service CabalRpc {
   rpc MarketSell(Sell) returns (TradeResponse) {}
   rpc MarketBuy(Buy) returns (TradeResponse) {}
   rpc GetTokenTradeStats(TokenTradeStatsCall) returns (TokenTradeStats) {}
-  rpc GetTokenLimitOrders(TokenAddress) returns (TokenLimitOrders) {}
-  rpc PlaceLimitOrders(TokenLimitOrders) returns (PlaceLimitOrdersResponce) {}
-  rpc DeleteLimitOrders(DeleteOrders) returns (PlaceLimitOrdersResponce) {}
+  rpc GetTokenLimitOrders(orders.TokenAddress) returns (orders.TokenLimitOrders) {}
+  rpc PlaceLimitOrders(orders.TokenLimitOrders) returns (orders.PlaceLimitOrdersResponce) {}
+  rpc DeleteLimitOrders(orders.DeleteOrders) returns (orders.PlaceLimitOrdersResponce) {}
 }
 
-message Positions {}
-
-message DeleteOrders {
-  string mint = 2;
-  repeated uint64 ids = 1;
-}
-message PlaceLimitOrdersResponce {
-  uint32 token_orders_num = 1;
-}
-
-message TokenLimitOrders {
-  string mint = 2;
-  repeated ApiOrder orders =1;
-}
-
-message ApiOrder {
-  optional uint64 id = 1;
-  float slippage = 2;
-  uint64 tip = 3;
-  Target target = 4;
-  Side side = 5;
-  Amount amount = 6;
-  Trigger trigger =7;
-}
-enum Trigger {
-  IMMEDIATE =0;
-  MIGRATION =1;
-}
-
-message Target {
-  oneof target_type {
-      TargetPrice price = 1;
-      TargetProfit profit = 2;
-      TargetMovingPerc moving_perc = 3;
-      Market market = 4;
-  }
-}
-
-message TargetPrice {
-  float price = 1;
-  Direction direction = 2;
-}
-
-message TargetProfit {
-  float profit_perc = 1;
-  Direction direction = 2;
-}
-
-message TargetMovingPerc {
-  float price_perc = 1;
-  optional float local_ath = 2;
-  Direction direction = 3;
-}
-
-message Market {}
-
-enum Side {
-  BUY = 0;
-  SELL = 1;
-}
-
-enum Direction {
-  ABOVE = 0;
-  BELOW = 1;
-}
-
-message Amount {
-  oneof amount_type {
-      float perc = 1;
-      uint64 fixed = 2;
-  }
-}
-
-
-message TokenAddress {
-  string mint = 1;
-}
 
 
 
@@ -163,8 +89,9 @@ message UserResponse {
   oneof user_response_kind {
     TradeResponse trade_status = 1;
     TokenTradeStats trade_stats = 2;
-    Ping ping = 3;
-    Pong pong = 4;
+    txncb.LandedTxnState txn_cb =3;
+    Ping ping = 4;
+    Pong pong = 5;
   }
 }
 

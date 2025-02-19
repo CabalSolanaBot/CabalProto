@@ -12,5 +12,12 @@ fn main() -> io::Result<()> {
         cfg = cfg.build_server(true);
     }
 
-    cfg.compile_protos(&["protos/orders.proto", "protos/cabal.proto"], &["protos"])
+    cfg.compile_protos(
+        &[
+            "protos/orders.proto",
+            "protos/txncb.proto",
+            "protos/cabal.proto",
+        ],
+        &["protos"],
+    )
 }
