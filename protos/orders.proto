@@ -5,16 +5,17 @@ package orders;
 message Positions {}
 
 message DeleteOrders {
-  string mint = 2;
-  repeated uint64 ids = 1;
+  string mint = 1;
+  repeated uint64 ids = 2;
 }
 message PlaceLimitOrdersResponce {
   uint32 token_orders_num = 1;
+  repeated uint64 ids=2;
 }
 
 message TokenLimitOrders {
-  string mint = 2;
-  repeated ApiOrder orders =1;
+  string mint = 1;
+  repeated ApiOrder orders =2;
 }
 
 message ApiOrder {

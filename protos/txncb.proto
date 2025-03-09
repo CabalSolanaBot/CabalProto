@@ -7,7 +7,14 @@ message LandedTxnState {
     oneof state_type {
         Failed failed = 1;
         Confirmed confirmed = 2;
+        Lost lost =3;
     }
+}
+
+
+message Lost {
+    repeated string signatures =1;
+    optional uint64 order_id = 2; 
 }
 
 message Failed {
@@ -15,7 +22,8 @@ message Failed {
     TxnTips tips = 2;
     uint32 cu = 3;
     string err = 4;
-    string signature =5; 
+    string signature =5;
+    optional uint64 order_id = 6; 
 }
 
 message Confirmed {
@@ -23,7 +31,8 @@ message Confirmed {
     repeated ParsedTrade trades = 2;
     TxnTips tips = 3;
     uint32 cu = 4;
-    string signature =5; 
+    string signature =5;
+    optional uint64 order_id = 6; 
 }
 
 message ParsedTrade {
