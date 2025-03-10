@@ -20,7 +20,7 @@ message TokenLimitOrders {
 
 message ApiOrder {
   optional uint64 id = 1;
-  float slippage = 2;
+  uint32 slippage_bps = 2;
   uint64 tip = 3;
   Target target = 4;
   Side side = 5;
@@ -71,7 +71,7 @@ enum Direction {
 
 message Amount {
   oneof amount_type {
-      float perc = 1;
+      uint32 perc_bps = 1;
       uint64 fixed = 2;
   }
 }

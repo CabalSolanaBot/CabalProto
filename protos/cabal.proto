@@ -178,7 +178,7 @@ message Buy {
   uint64 amount = 1;
   QuoteKind qoute_kind =2;
   string mint = 3;  
-  uint64 slippage_bps = 4; // fract 0 - 1
+  uint32 slippage_bps = 4; // fract 0 - 1
   uint64 tip = 5;
   optional uint64 priority_fee = 6; // lamports
   optional uint64 nonce = 7;
@@ -187,9 +187,9 @@ message Buy {
 }
 
 message Sell {
-  uint64 amount_bps = 1; // fract 0 - 1
+  uint32 amount_bps = 1; // fract 0 - 1
   string mint = 2;  
-  uint64 slippage_bps  = 3; // fract 0 - 1
+  uint32 slippage_bps  = 3; // fract 0 - 1
   uint64 tip = 4;
   optional uint64 priority_fee = 5; // lamports
   optional uint64 nonce = 6;
