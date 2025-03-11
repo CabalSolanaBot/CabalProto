@@ -117,6 +117,7 @@ message TokenStatus {
     uint64 base_liq = 6;
     uint64 quote_liq = 7;
     common.QuoteKind qoute_kind =8;
+    optional uint32 tax_bps = 9;
 }
 enum MigrationStatus {
   migrated = 0;
