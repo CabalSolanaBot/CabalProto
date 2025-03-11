@@ -77,6 +77,4 @@ message Amount {
 }
 
 
-message TokenAddress {
-  string mint = 1;
-}
+

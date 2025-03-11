@@ -1,7 +1,12 @@
 
 syntax = "proto3";
 
+import "common.proto";
+
 package txncb;
+
+
+
 
 message LandedTxnState {
     oneof state_type {
@@ -45,26 +50,24 @@ message ParsedTrade {
 message Buy {
     string mint = 1;
     string ticker = 2;
-    TokenLamports base = 3;
+    common.TokenLamports base = 3;
     uint64 quote = 4;
-    Decimal mc = 5;
-    Decimal price = 6;
+    common.Decimal mc = 5;
+    common.Decimal price = 6;
+    common.QuoteKind qoute_kind =7;
 }
 
 message Sell {
     string mint = 1;
     string ticker = 2;
-    TokenLamports tokens = 3;
+    common.TokenLamports tokens = 3;
     uint64 quote = 4;
-    Decimal pnl = 5;
-    Decimal mc = 6;
-    Decimal price = 7;
+    common.Decimal pnl = 5;
+    common.Decimal mc = 6;
+    common.Decimal price = 7;
 }
 
-message TokenLamports {
-    uint64 amount = 1;
-    uint32 decimals = 2;
-}
+
 
 message TxnTips {
     uint64 priority = 1;
@@ -75,6 +78,3 @@ message TransactionError {
     string message = 1;
 }
 
-message Decimal {
-    string value = 1;
-}
