@@ -9,25 +9,21 @@ package cabal;
 
 
 service CabalRpc {
-  rpc Echo (EchoRequest) returns (EchoResponse) {} // TEST ONLY NOT PROD
-   
-  //rpc UserActivityBidi(stream UserAction) returns (stream UserResponse) {}
-
-  //rpc TradesBidi(stream TradeEventsRequest) returns (stream TradeEventsResponse) {}
-
   rpc UserActivityUni(UserActionSub) returns (stream UserResponse) {}
-
   rpc TradesUni(TradeEventSub) returns (stream TradeEventResponse) {}
-
   rpc SubscribeToken(TokenTradeEventSub) returns (TradeResponse) {}
   rpc TradePing(Ping) returns (Pong) {}
   rpc UserPing(Ping) returns (Pong) {}
   rpc MarketSell(Sell) returns (TradeResponse) {}
   rpc MarketBuy(Buy) returns (TradeResponse) {}
-  //rpc GetTokenTradeStats(TokenTradeStatsCall) returns (TokenTradeStats) {}
   rpc GetTokenLimitOrders(common.TokenAddress) returns (orders.TokenLimitOrders) {}
   rpc PlaceLimitOrders(orders.TokenLimitOrders) returns (orders.PlaceLimitOrdersResponce) {}
   rpc DeleteLimitOrders(orders.DeleteOrders) returns (orders.PlaceLimitOrdersResponce) {}
+
+  //rpc Echo (EchoRequest) returns (EchoResponse) {} // TEST ONLY
+  //rpc UserActivityBidi(stream UserAction) returns (stream UserResponse) {}
+  //rpc TradesBidi(stream TradeEventsRequest) returns (stream TradeEventsResponse) {}
+  //rpc GetTokenTradeStats(TokenTradeStatsCall) returns (TokenTradeStats) {}
 }
 
 
