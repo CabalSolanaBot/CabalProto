@@ -114,6 +114,7 @@ message TokenStatus {
     uint64 quote_liq = 7;
     common.QuoteKind qoute_kind =8;
     optional uint32 tax_bps = 9;
+    string ticker = 10;
 }
 enum MigrationStatus {
   migrated = 0;
@@ -128,6 +129,7 @@ enum PoolKind {
   meteora = 3;
   ray_clmm = 4;
   ray_cpmm = 5;
+  pump_amm = 6;
 }
 
 message TokenTradeStats {
