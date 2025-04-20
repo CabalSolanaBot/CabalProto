@@ -130,6 +130,7 @@ enum PoolKind {
   ray_clmm = 4;
   ray_cpmm = 5;
   pump_amm = 6;
+  ray_ll = 7;
 }
 
 message TokenTradeStats {
