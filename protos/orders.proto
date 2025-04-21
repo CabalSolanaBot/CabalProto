@@ -6,11 +6,11 @@ message Positions {}
 
 message DeleteOrders {
   string mint = 1;
-  repeated uint64 ids = 2;
+  repeated int64 ids = 2;
 }
 message PlaceLimitOrdersResponce {
   uint32 token_orders_num = 1;
-  repeated uint64 ids=2;
+  repeated int64 ids=2;
 }
 
 message TokenLimitOrders {
@@ -19,7 +19,7 @@ message TokenLimitOrders {
 }
 
 message ApiOrder {
-  optional uint64 id = 1;
+  optional int64 id = 1;
   uint32 slippage_bps = 2;
   uint64 tip = 3;
   Target target = 4;
