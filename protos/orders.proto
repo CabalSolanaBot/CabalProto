@@ -8,7 +8,7 @@ message DeleteOrders {
   string mint = 1;
   repeated int64 ids = 2;
 }
-message PlaceLimitOrdersResponce {
+message PlaceLimitOrdersResponse {
   uint32 token_orders_num = 1;
   repeated int64 ids=2;
 }
