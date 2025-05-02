@@ -57,11 +57,11 @@ rpc MarketSell(Sell) returns (TradeResponse);
 rpc MarketBuy(Buy) returns (TradeResponse);
 ```
 - Execute immediate buy/sell market orders.
-ч
+
 ### Limit Orders
 ```proto
-rpc PlaceLimitOrders(orders.TokenLimitOrders) returns (orders.PlaceLimitOrdersResponce);
-rpc DeleteLimitOrders(orders.DeleteOrders) returns (orders.PlaceLimitOrdersResponce);
+rpc PlaceLimitOrders(orders.TokenLimitOrders) returns (orders.PlaceLimitOrdersResponse);
+rpc DeleteLimitOrders(orders.DeleteOrders) returns (orders.PlaceLimitOrdersResponse);
 ```
 - Manage limit orders by placing or deleting them.
 

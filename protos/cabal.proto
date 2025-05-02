@@ -17,8 +17,8 @@ service CabalRpc {
   rpc MarketSell(Sell) returns (TradeResponse) {}
   rpc MarketBuy(Buy) returns (TradeResponse) {}
   rpc GetTokenLimitOrders(common.TokenAddress) returns (orders.TokenLimitOrders) {}
-  rpc PlaceLimitOrders(orders.TokenLimitOrders) returns (orders.PlaceLimitOrdersResponce) {}
-  rpc DeleteLimitOrders(orders.DeleteOrders) returns (orders.PlaceLimitOrdersResponce) {}
+  rpc PlaceLimitOrders(orders.TokenLimitOrders) returns (orders.PlaceLimitOrdersResponse) {}
+  rpc DeleteLimitOrders(orders.DeleteOrders) returns (orders.PlaceLimitOrdersResponse) {}
 
   //rpc Echo (EchoRequest) returns (EchoResponse) {} // TEST ONLY
   //rpc UserActivityBidi(stream UserAction) returns (stream UserResponse) {}
@@ -179,7 +179,7 @@ message BurnEventData {
 
 message Buy {
   uint64 amount = 1;
-  string mint = 2;  
+  string mint = 2;
   uint32 slippage_bps = 3; // fract 0 - 1
   uint64 tip = 4;
   optional uint64 priority_fee = 5; // lamports
@@ -191,7 +191,7 @@ message Buy {
 
 message Sell {
   uint32 amount_bps = 1; // fract 0 - 1
-  string mint = 2;  
+  string mint = 2;
   uint32 slippage_bps  = 3; // fract 0 - 1
   uint64 tip = 4;
   optional uint64 priority_fee = 5; // lamports
