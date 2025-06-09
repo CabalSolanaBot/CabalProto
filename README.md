@@ -60,8 +60,8 @@ rpc MarketBuy(Buy) returns (TradeResponse);
 ч
 ### Limit Orders
 ```proto
-rpc PlaceLimitOrders(orders.TokenLimitOrders) returns (orders.PlaceLimitOrdersResponce);
-rpc DeleteLimitOrders(orders.DeleteOrders) returns (orders.PlaceLimitOrdersResponce);
+rpc PlaceLimitOrders(orders.TokenLimitOrders) returns (orders.PlaceLimitOrdersResponse);
+rpc DeleteLimitOrders(orders.DeleteOrders) returns (orders.PlaceLimitOrdersResponse);
 ```
 - Manage limit orders by placing or deleting them.
 

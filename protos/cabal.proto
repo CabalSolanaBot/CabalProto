@@ -17,8 +17,8 @@ service CabalRpc {
   rpc MarketSell(Sell) returns (TradeResponse) {}
   rpc MarketBuy(Buy) returns (TradeResponse) {}
   rpc GetTokenLimitOrders(common.TokenAddress) returns (orders.TokenLimitOrders) {}
-  rpc PlaceLimitOrders(orders.TokenLimitOrders) returns (orders.PlaceLimitOrdersResponce) {}
-  rpc DeleteLimitOrders(orders.DeleteOrders) returns (orders.PlaceLimitOrdersResponce) {}
+  rpc PlaceLimitOrders(orders.TokenLimitOrders) returns (orders.PlaceLimitOrdersResponse) {}
+  rpc DeleteLimitOrders(orders.DeleteOrders) returns (orders.PlaceLimitOrdersResponse) {}
 
   //rpc Echo (EchoRequest) returns (EchoResponse) {} // TEST ONLY
   //rpc UserActivityBidi(stream UserAction) returns (stream UserResponse) {}
