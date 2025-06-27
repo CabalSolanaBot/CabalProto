@@ -1,0 +1,176 @@
+syntax = "proto3";
+
+package copytrade;
+
+import "orders.proto";
+import "common.proto";
+
+message CopyTradeConfigProto {
+  optional int64 cfg_id = 1;
+  bool is_on = 2;
+
+  CopyTradeSellMode sell_mode = 3;
+  uint64 sell_amount = 4;
+  uint32 sell_amount_perc_bps = 5;
+
+  string name = 6;
+
+  CopyTradeBuyMode buy_mode = 7;
+  uint64 buy_amount = 8;
+  //CAN BE ABOVE 10000
+  uint64 buy_amount_perc_bps = 9;
+
+  bool buy_freeze = 10;
+
+  bool pump = 11;
+  bool ray_amm = 12;
+  bool ray_cpmm = 13;
+  bool pump_amm = 14;
+  bool ray_ll = 15;
+  bool moon = 16;
+
+  uint64 min_buy = 17;
+  uint64 max_buy = 18;
+
+  float min_mcap = 19;
+  float max_mcap = 20;
+
+  string follow_buys = 21;
+  string follow_sells = 22;
+
+  uint64 buy_tip = 23;
+  uint64 sell_tip = 24;
+
+  uint64 buy_fee = 25;
+  uint64 sell_fee = 26;
+
+  uint32 buy_slippage_bps = 27;
+  uint32 sell_slippage_bps = 28;
+
+  //duration in seconds
+  uint64 min_age = 29;
+  uint64 max_age = 30;
+
+  bool use_limit_orders = 31;
+  repeated orders.ApiOrder limit_orders = 32;
+
+  repeated string copy_wallets = 33;
+  repeated string token_buys = 34;
+
+  common.TransactionProcessors txn_proc = 35;
+
+  bool blacklist = 36;
+
+  uint32 max_slot_latency_buy = 37;
+  uint32 max_slot_latency_sell = 38;
+
+  bool reverse_buy = 39;
+  bool reverse_sell = 40;
+
+}
+
+enum CopyTradeBuyMode {
+    ONLY_LIMITS_BUY = 0;
+    FIXED_BUY = 1;
+    PERC_SELF_BUY = 2;
+    PERC_MASTER_BUY= 3;
+}
+enum CopyTradeSellMode {
+    ONLY_LIMITS_SELL = 0;
+    FIXED_SELL = 1;
+    PERC_SELL = 2;
+}
+enum FollowBuys {
+    OFF_BUYS = 0;
+    FIRST_BUY = 1;
+    ALL_BUYS = 2;
+}
+
+enum FollowSells {
+    OFF_SELLS = 0;
+    FIRST_SELL = 1;
+    ALL_SELLS = 2;
+}
+
+message BoolFieldRequest {
+  int64 cfg_id = 1;
+  bool value = 2;
+}
+
+message Uint64FieldRequest {
+  int64 cfg_id = 1;
+  uint64 value = 2;
+}
+
+message Uint32FieldRequest {
+  int64 cfg_id = 1;
+  uint32 value = 2;
+}
+
+message FloatFieldRequest {
+  int64 cfg_id = 1;
+  float value = 2;
+}
+
+message StringFieldRequest {
+  int64 cfg_id = 1;
+  string value = 2;
+}
+
+message BuyModeFieldRequest {
+  int64 cfg_id = 1;
+  CopyTradeBuyMode value = 2;
+}
+
+message SellModeFieldRequest {
+  int64 cfg_id = 1;
+  CopyTradeSellMode value = 2;
+}
+
+message FollowBuysFieldRequest {
+  int64 cfg_id = 1;
+  FollowBuys value = 2;
+}
+
+message FollowSellsFieldRequest {
+  int64 cfg_id = 1;
+  FollowSells value = 2;
+}
+
+message TxnProcFieldRequest {
+  int64 cfg_id = 1;
+  common.TransactionProcessors value = 2;
+}
+
+message LimitOrdersFieldRequest {
+  int64 cfg_id = 1;
+  repeated orders.ApiOrder value = 2;
+}
+
+message StringsFieldRequest {
+  int64 cfg_id = 1;
+  bool delete = 2;
+  repeated string value = 3;
+}
+
+message GenericSetResponse {
+  int64 cfg_id = 1;
+  bool success = 2;
+}
+
+message GetRepeatedStringsRequest {
+  int64 cfg_id = 1;
+}
+
+message GetRepeatedStringsResponse {
+  repeated string values = 1;
+}
+
+message CtCfgIds {
+  repeated int64 ids = 1;
+}
+message GetCfgIds {}
+
+message GetCfg {
+  int64 id = 1;
+}

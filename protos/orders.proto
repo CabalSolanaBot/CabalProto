@@ -1,6 +1,9 @@
 syntax = "proto3";
 
 package orders;
+import "common.proto";
+
+
 
 message Positions {}
 
@@ -26,8 +29,10 @@ message ApiOrder {
   Side side = 5;
   Amount amount = 6;
   Trigger trigger =7;
-  optional int64 expire_at_timestamp_utc=8; //default is 7 days, but this is subject to change
-  optional uint64 priority_fee = 9; // lamports per 1M CU (CU PRICE)
+  common.TransactionProcessors procs = 8;
+  optional int64 expire_at_timestamp_utc=9; //default is 7 days, but this is subject to change
+  optional uint64 priority_fee = 10; // lamports per 1M CU (CU PRICE)
+  optional uint32 slot_latency = 11;
 }
 enum Trigger {
   IMMEDIATE =0;
@@ -36,10 +41,11 @@ enum Trigger {
 
 message Target {
   oneof target_type {
-      TargetPrice price = 1;
-      TargetProfit profit = 2;
-      TargetMovingPerc moving_perc = 3;
-      Market market = 4;
+      Market market = 1;
+      TargetPrice price = 2;
+      TargetProfit profit = 3;
+      TargetPerc perc = 4;
+      TargetMovingPerc moving_perc = 5;
   }
 }
 
@@ -49,13 +55,23 @@ message TargetPrice {
 }
 
 message TargetProfit {
+  //TODO change this to bps, where 0-10000 = -100%-0% range
   float profit_perc = 1;
   Direction direction = 2;
 }
 
 message TargetMovingPerc {
-  float price_perc = 1;
+  //CAN BE MORE THAN 10000
+  uint64 price_perc_bps = 1;
+   //LEAVE NONE ON SUBMIT
   optional float local_ath = 2;
+  Direction direction = 3;
+}
+message TargetPerc {
+  //CAN BE MORE THAN 10000
+  uint64 perc = 1;
+  //LEAVE NONE ON SUBMIT
+  optional float price_target = 2;
   Direction direction = 3;
 }
 
@@ -76,6 +92,11 @@ message Amount {
       uint32 perc_bps = 1;
       uint64 fixed = 2;
   }
+}
+
+message ClearLimitOrders {}
+message ClearLimitOrdersResponse {
+  repeated int64 ids = 1;
 }
 
 

@@ -22,3 +22,14 @@ enum QuoteKind {
     SOL=0;
     USDC=1;
 }
+
+message TransactionProcessors {
+    bool jito_validators = 1;
+    bool jito_bundled = 2;
+    bool cabal = 3;
+    bool bloxroute = 4;
+    bool nozomi = 5;
+    bool next_block = 6;
+    bool slot0 = 7;
+    bool astra = 8;
+}

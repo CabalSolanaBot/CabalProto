@@ -1,10 +1,12 @@
 syntax = "proto3";
+package cabal;
 
 import "orders.proto";
 import "txncb.proto";
 import "common.proto";
+import "copytrade.proto";
 
-package cabal;
+
 
 
 
@@ -19,14 +21,81 @@ service CabalRpc {
   rpc GetTokenLimitOrders(common.TokenAddress) returns (orders.TokenLimitOrders) {}
   rpc PlaceLimitOrders(orders.TokenLimitOrders) returns (orders.PlaceLimitOrdersResponse) {}
   rpc DeleteLimitOrders(orders.DeleteOrders) returns (orders.PlaceLimitOrdersResponse) {}
+  rpc ClearLimitOrders(orders.ClearLimitOrders) returns (orders.ClearLimitOrdersResponse) {}
+  rpc FetchStateInfo(FetchInfo) returns (FetchInfoResponse) {}
 
   //rpc Echo (EchoRequest) returns (EchoResponse) {} // TEST ONLY
   //rpc UserActivityBidi(stream UserAction) returns (stream UserResponse) {}
   //rpc TradesBidi(stream TradeEventsRequest) returns (stream TradeEventsResponse) {}
   //rpc GetTokenTradeStats(TokenTradeStatsCall) returns (TokenTradeStats) {}
+
+  //Copytrade
+  rpc CtNewCfg(copytrade.CopyTradeConfigProto) returns (copytrade.GenericSetResponse);
+  rpc CtGetCfgs(copytrade.GetCfgIds) returns (copytrade.CtCfgIds);
+  rpc CtGetCfg(copytrade.GetCfg) returns (copytrade.CopyTradeConfigProto);
+  // Bool fields
+  rpc CtCfgSetIsOn(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetBuyFreeze(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetPump(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetRayAmm(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetRayCpmm(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetPumpAmm(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetRayLl(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetUseLimitOrders(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetBlacklist(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetReverseBuy(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetReverseSell(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
+
+  // String fields
+  rpc CtCfgSetName(copytrade.StringFieldRequest) returns (copytrade.GenericSetResponse);
+
+  // Enums
+  rpc CtCfgSetBuyMode(copytrade.BuyModeFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetSellMode(copytrade.SellModeFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetFollowBuys(copytrade.FollowBuysFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgetFollowSells(copytrade.FollowSellsFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetTxnProc(copytrade.TxnProcFieldRequest) returns (copytrade.GenericSetResponse);
+
+  // Uint64 fields
+  rpc CtCfgSetBuyAmount(copytrade.Uint64FieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetBuyAmountPercBps(copytrade.Uint64FieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetMinBuy(copytrade.Uint64FieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetMaxBuy(copytrade.Uint64FieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetBuyTip(copytrade.Uint64FieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetSellTip(copytrade.Uint64FieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetBuyFee(copytrade.Uint64FieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetSellFee(copytrade.Uint64FieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetMinAge(copytrade.Uint64FieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetMaxAge(copytrade.Uint64FieldRequest) returns (copytrade.GenericSetResponse);
+
+  // Uint32 fields
+  rpc CtCfgSetSellAmountPercBps(copytrade.Uint32FieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetBuySlippageBps(copytrade.Uint32FieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetSellSlippageBps(copytrade.Uint32FieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetMaxSlotLatencyBuy(copytrade.Uint32FieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetMaxSlotLatencySell(copytrade.Uint32FieldRequest) returns (copytrade.GenericSetResponse);
+
+  // Float fields
+  rpc CtCfgSetMinMcap(copytrade.FloatFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetMaxMcap(copytrade.FloatFieldRequest) returns (copytrade.GenericSetResponse);
+
+  // Repeated fields
+  rpc CtCfgSetLimitOrders(copytrade.LimitOrdersFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetCopyWallets(copytrade.StringsFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetTokenBuys(copytrade.StringsFieldRequest) returns (copytrade.GenericSetResponse);
+
+  // Getters for repeated fields
+  rpc GetCopyWallets(copytrade.GetRepeatedStringsRequest) returns (copytrade.GetRepeatedStringsResponse);
+  rpc GetTokenBuys(copytrade.GetRepeatedStringsRequest) returns (copytrade.GetRepeatedStringsResponse);
 }
 
+message FetchInfo {}
 
+message FetchInfoResponse {
+  string wallet = 1;
+  uint64 balance = 2;
+  uint32 limit_orders_num =3;
+}
 
 
 message UserAction {
@@ -182,11 +251,14 @@ message Buy {
   string mint = 2;  
   uint32 slippage_bps = 3; // fract 0 - 1
   uint64 tip = 4;
-  optional uint64 priority_fee = 5; // lamports
-  optional uint64 nonce = 6;
+  common.TransactionProcessors procs = 5;
+  optional uint64 priority_fee = 6; // lamports
   optional uint32 slot_latency = 7;
   optional common.UnixTimestamp expire_at =8; // Utc timestamp in seconds
-  optional common.QuoteKind qoute_kind =9;
+  optional uint64 nonce = 9;
+  optional uint32 max_price_impact_bps = 10;
+  repeated orders.ApiOrder auto_limits = 11;
+  optional common.QuoteKind qoute_kind = 12;
 }
 
 message Sell {
@@ -194,9 +266,12 @@ message Sell {
   string mint = 2;  
   uint32 slippage_bps  = 3; // fract 0 - 1
   uint64 tip = 4;
-  optional uint64 priority_fee = 5; // lamports
-  optional uint64 nonce = 6;
+  common.TransactionProcessors procs = 5;
+  optional uint64 priority_fee = 6; // lamports
   optional uint32 slot_latency = 7;
   optional common.UnixTimestamp expire_at =8;  // Utc timestamp in seconds
+  optional uint64 nonce = 9;
+  optional uint32 max_price_impact_bps = 10;
+  repeated orders.ApiOrder auto_limits = 11;
 }
 

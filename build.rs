@@ -18,6 +18,7 @@ fn main() -> io::Result<()> {
             "protos/txncb.proto",
             "protos/cabal.proto",
             "protos/common.proto",
+            "protos/copytrade.proto",
         ],
         &["protos"],
     )

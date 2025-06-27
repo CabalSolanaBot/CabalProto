@@ -10,3 +10,6 @@ pub mod txncb {
 pub mod common {
     tonic::include_proto!("common");
 }
+pub mod copytrade {
+    tonic::include_proto!("copytrade");
+}
