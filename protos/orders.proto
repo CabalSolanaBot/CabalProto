@@ -30,13 +30,15 @@ message ApiOrder {
   Amount amount = 6;
   Trigger trigger =7;
   common.TransactionProcessors procs = 8;
-  optional int64 expire_at_timestamp_utc=9; //default is 7 days, but this is subject to change
+  optional int64 expire_dur_in_sec= 9; //default is 7 days, but this is subject to change
   optional uint64 priority_fee = 10; // lamports per 1M CU (CU PRICE)
   optional uint32 slot_latency = 11;
 }
 enum Trigger {
   IMMEDIATE =0;
   MIGRATION =1;
+  DEV_BUY = 2;
+  DEV_SELL = 3;
 }
 
 message Target {

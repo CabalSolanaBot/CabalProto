@@ -85,8 +85,8 @@ service CabalRpc {
   rpc CtCfgSetTokenBuys(copytrade.StringsFieldRequest) returns (copytrade.GenericSetResponse);
 
   // Getters for repeated fields
-  rpc GetCopyWallets(copytrade.GetRepeatedStringsRequest) returns (copytrade.GetRepeatedStringsResponse);
-  rpc GetTokenBuys(copytrade.GetRepeatedStringsRequest) returns (copytrade.GetRepeatedStringsResponse);
+  rpc CtGetCopyWallets(copytrade.GetRepeatedStringsRequest) returns (copytrade.GetRepeatedStringsResponse);
+  rpc CtGetTokenBuys(copytrade.GetRepeatedStringsRequest) returns (copytrade.GetRepeatedStringsResponse);
 }
 
 message FetchInfo {}
