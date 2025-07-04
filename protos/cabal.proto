@@ -18,11 +18,14 @@ service CabalRpc {
   rpc UserPing(Ping) returns (Pong) {}
   rpc MarketSell(Sell) returns (TradeResponse) {}
   rpc MarketBuy(Buy) returns (TradeResponse) {}
+  rpc SellInitials(SellInit) returns (TradeResponse) {}
   rpc GetTokenLimitOrders(common.TokenAddress) returns (orders.TokenLimitOrders) {}
   rpc PlaceLimitOrders(orders.TokenLimitOrders) returns (orders.PlaceLimitOrdersResponse) {}
   rpc DeleteLimitOrders(orders.DeleteOrders) returns (orders.PlaceLimitOrdersResponse) {}
   rpc ClearLimitOrders(orders.ClearLimitOrders) returns (orders.ClearLimitOrdersResponse) {}
   rpc FetchStateInfo(FetchInfo) returns (FetchInfoResponse) {}
+  rpc ChangeApiKey(ApiKeyReq) returns (ApiKeyResp) {}
+  rpc TxnProcsStat(TxnProcsStatReq) returns (TxnProcsStatsProto) {}
 
   //rpc Echo (EchoRequest) returns (EchoResponse) {} // TEST ONLY
   //rpc UserActivityBidi(stream UserAction) returns (stream UserResponse) {}
@@ -88,8 +91,33 @@ service CabalRpc {
   rpc CtGetCopyWallets(copytrade.GetRepeatedStringsRequest) returns (copytrade.GetRepeatedStringsResponse);
   rpc CtGetTokenBuys(copytrade.GetRepeatedStringsRequest) returns (copytrade.GetRepeatedStringsResponse);
 }
+message TxnProcsStatReq {}
+
+message TxnProcsStatsProto {
+  ProcessorStatsProto jito_validators = 1;
+  ProcessorStatsProto cabal = 2;
+  ProcessorStatsProto bloxroute = 3;
+  ProcessorStatsProto nozomi = 4;
+  ProcessorStatsProto next_block = 5;
+  ProcessorStatsProto slot0 = 6;
+  ProcessorStatsProto astra = 7;
+}
+
+
+message ProcessorStatsProto {
+  uint64 total_slot_lat = 1;
+  uint64 sent_txn_count = 2;
+  uint64 landed_txn_count = 3;
+  uint64 error_txn_count = 4;
+  uint64 prio_fee = 5;
+  uint64 tip = 6;
+}
 
 message FetchInfo {}
+message ApiKeyReq {
+  string key = 1;
+}
+message ApiKeyResp {}
 
 message FetchInfoResponse {
   string wallet = 1;
@@ -97,25 +125,22 @@ message FetchInfoResponse {
   uint32 limit_orders_num =3;
 }
 
-
-message UserAction {
-  oneof user_action_kind {
-    Buy buy = 1;
-    Sell sell = 2;
-    TokenTradeStats token_trade_stats =3;
-    Ping ping = 4;
-    Pong pong = 5;
+message UserResponse {
+  oneof user_response_kind {
+    TradeResponse trade_status = 1;
+    TokenTradeStats trade_stats = 2;
+    txncb.LandedTxnState txn_cb =3;
+    txncb.TxnConfirmState txn_cs =4;
+    Ping ping = 5;
+    Pong pong = 6;
   }
 }
 
+
+
 message TradeEventSub {}
 message UserActionSub {}
-message EchoRequest {
-  string message =1;
-}
-message EchoResponse {
-  string message =1;
-}
+
 message TradeEventRequest {
   oneof trade_event_request_kind {
     TokenTradeEventSub sub = 1;
@@ -151,15 +176,6 @@ message Pong{
 
 
 
-message UserResponse {
-  oneof user_response_kind {
-    TradeResponse trade_status = 1;
-    TokenTradeStats trade_stats = 2;
-    txncb.LandedTxnState txn_cb =3;
-    Ping ping = 4;
-    Pong pong = 5;
-  }
-}
 
 message TokenTradeStatsCall {
   string mint =1;
@@ -275,3 +291,25 @@ message Sell {
   repeated orders.ApiOrder auto_limits = 11;
 }
 
+message SellInit {
+  string mint = 2;  
+  uint32 slippage_bps  = 3; // fract 0 - 1
+  uint64 tip = 4;
+  common.TransactionProcessors procs = 5;
+  optional uint64 priority_fee = 6; // lamports
+  optional uint32 slot_latency = 7;
+  optional common.UnixTimestamp expire_at =8;  // Utc timestamp in seconds
+  optional uint64 nonce = 9;
+  optional uint32 max_price_impact_bps = 10;
+  repeated orders.ApiOrder auto_limits = 11;
+}
+
+// message UserAction {
+//   oneof user_action_kind {
+//     Buy buy = 1;
+//     Sell sell = 2;
+//     TokenTradeStats token_trade_stats =3;
+//     Ping ping = 4;
+//     Pong pong = 5;
+//   }
+// }

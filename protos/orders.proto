@@ -57,8 +57,8 @@ message TargetPrice {
 }
 
 message TargetProfit {
-  //TODO change this to bps, where 0-10000 = -100%-0% range
-  float profit_perc = 1;
+  //bps, where 0-10000 = -100%-0% range
+  uint64 profit_perc = 1;
   Direction direction = 2;
 }
 

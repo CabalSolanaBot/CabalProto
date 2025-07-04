@@ -2,11 +2,16 @@
 syntax = "proto3";
 
 import "common.proto";
+import "orders.proto";
 
 package txncb;
 
 
-
+message TxnConfirmState {
+    repeated string signatures =1;
+    ConfirmTradeKind kind = 2;
+    optional int64 order_id = 3; 
+}
 
 message LandedTxnState {
     oneof state_type {
@@ -16,10 +21,8 @@ message LandedTxnState {
     }
 }
 
-
 message Lost {
     repeated string signatures =1;
-    optional int64 order_id = 2; 
 }
 
 message Failed {
@@ -28,7 +31,6 @@ message Failed {
     uint32 cu = 3;
     string err = 4;
     string signature =5;
-    optional int64 order_id = 6; 
 }
 
 message Confirmed {
@@ -37,7 +39,6 @@ message Confirmed {
     TxnTips tips = 3;
     uint32 cu = 4;
     string signature =5;
-    optional int64 order_id = 6; 
 }
 
 message ParsedTrade {
@@ -78,3 +79,44 @@ message TransactionError {
     string message = 1;
 }
 
+
+
+message ConfirmTradeKind {
+  oneof kind {
+    Limit limit_order = 1;
+    Swap swap = 2;
+    Migration migration = 3;
+    Copytrade copytrade = 4;
+  }
+}
+
+message Limit{
+  string token = 1;
+  orders.ApiOrder order = 2;
+}
+
+message Swap {
+  string token = 1;
+  TradeKind trade_ty = 2;
+}
+
+message Migration {
+  string token = 1;
+  TradeKind trade_ty = 2;
+}
+
+message Copytrade {
+  int64 id = 1;
+  string config_name = 2;
+  string wallet = 3;
+  string tx_sig = 4;
+  string token = 5;
+  string amount = 6;
+  TradeKind trade_ty = 7;
+}
+
+
+enum TradeKind {
+  SELL = 0;
+  BUY = 1;
+}
