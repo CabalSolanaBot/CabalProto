@@ -1,0 +1,105 @@
+syntax = "proto3";
+
+package orders;
+import "common.proto";
+
+
+
+message Positions {}
+
+message DeleteOrders {
+  string mint = 1;
+  repeated int64 ids = 2;
+}
+message PlaceLimitOrdersResponse {
+  uint32 token_orders_num = 1;
+  repeated int64 ids=2;
+}
+
+message TokenLimitOrders {
+  string mint = 1;
+  repeated ApiOrder orders =2;
+}
+
+message ApiOrder {
+  optional int64 id = 1;
+  uint32 slippage_bps = 2;
+  uint64 tip = 3;
+  Target target = 4;
+  Side side = 5;
+  Amount amount = 6;
+  Trigger trigger =7;
+  common.TransactionProcessors procs = 8;
+  optional int64 expire_dur_in_sec= 9; //default is 7 days, but this is subject to change
+  optional uint64 priority_fee = 10; // lamports per 1M CU (CU PRICE)
+  optional uint32 slot_latency = 11;
+}
+enum Trigger {
+  IMMEDIATE =0;
+  MIGRATION =1;
+  DEV_BUY = 2;
+  DEV_SELL = 3;
+}
+
+message Target {
+  oneof target_type {
+      Market market = 1;
+      TargetPrice price = 2;
+      TargetProfit profit = 3;
+      TargetPerc perc = 4;
+      TargetMovingPerc moving_perc = 5;
+  }
+}
+
+message TargetPrice {
+  float price = 1;
+  Direction direction = 2;
+}
+
+message TargetProfit {
+  //bps, where 0-10000 = -100%-0% range
+  uint64 profit_perc = 1;
+  Direction direction = 2;
+}
+
+message TargetMovingPerc {
+  //CAN BE MORE THAN 10000
+  uint64 price_perc_bps = 1;
+   //LEAVE NONE ON SUBMIT
+  optional float local_ath = 2;
+  Direction direction = 3;
+}
+message TargetPerc {
+  //CAN BE MORE THAN 10000
+  uint64 perc = 1;
+  //LEAVE NONE ON SUBMIT
+  optional float price_target = 2;
+  Direction direction = 3;
+}
+
+message Market {}
+
+enum Side {
+  BUY = 0;
+  SELL = 1;
+}
+
+enum Direction {
+  ABOVE = 0;
+  BELOW = 1;
+}
+
+message Amount {
+  oneof amount_type {
+      uint32 perc_bps = 1;
+      uint64 fixed = 2;
+  }
+}
+
+message ClearLimitOrders {}
+message ClearLimitOrdersResponse {
+  repeated int64 ids = 1;
+}
+
+
+

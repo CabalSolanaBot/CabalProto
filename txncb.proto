@@ -1,0 +1,122 @@
+
+syntax = "proto3";
+
+import "common.proto";
+import "orders.proto";
+
+package txncb;
+
+
+message TxnConfirmState {
+    repeated string signatures =1;
+    ConfirmTradeKind kind = 2;
+    optional int64 order_id = 3; 
+}
+
+message LandedTxnState {
+    oneof state_type {
+        Failed failed = 1;
+        Confirmed confirmed = 2;
+        Lost lost =3;
+    }
+}
+
+message Lost {
+    repeated string signatures =1;
+}
+
+message Failed {
+    int32 slot_diff = 1;
+    TxnTips tips = 2;
+    uint32 cu = 3;
+    string err = 4;
+    string signature =5;
+}
+
+message Confirmed {
+    int32 slot_diff = 1;
+    repeated ParsedTrade trades = 2;
+    TxnTips tips = 3;
+    uint32 cu = 4;
+    string signature =5;
+}
+
+message ParsedTrade {
+    oneof trade_type {
+        Buy buy = 1;
+        Sell sell = 2;
+    }
+}
+
+message Buy {
+    string mint = 1;
+    string ticker = 2;
+    common.TokenLamports base = 3;
+    uint64 quote = 4;
+    common.Decimal mc = 5;
+    common.Decimal price = 6;
+    common.QuoteKind qoute_kind =7;
+}
+
+message Sell {
+    string mint = 1;
+    string ticker = 2;
+    common.TokenLamports tokens = 3;
+    uint64 quote = 4;
+    common.Decimal pnl = 5;
+    common.Decimal mc = 6;
+    common.Decimal price = 7;
+}
+
+
+
+message TxnTips {
+    uint64 priority = 1;
+    uint64 jito = 2;
+}
+
+message TransactionError {
+    string message = 1;
+}
+
+
+
+message ConfirmTradeKind {
+  oneof kind {
+    Limit limit_order = 1;
+    Swap swap = 2;
+    Migration migration = 3;
+    Copytrade copytrade = 4;
+  }
+}
+
+message Limit{
+  string token = 1;
+  orders.ApiOrder order = 2;
+}
+
+message Swap {
+  string token = 1;
+  TradeKind trade_ty = 2;
+}
+
+message Migration {
+  string token = 1;
+  TradeKind trade_ty = 2;
+}
+
+message Copytrade {
+  int64 id = 1;
+  string config_name = 2;
+  string wallet = 3;
+  string tx_sig = 4;
+  string token = 5;
+  string amount = 6;
+  TradeKind trade_ty = 7;
+}
+
+
+enum TradeKind {
+  SELL = 0;
+  BUY = 1;
+}
