@@ -26,6 +26,7 @@ service CabalRpc {
   rpc FetchStateInfo(FetchInfo) returns (FetchInfoResponse) {}
   rpc ChangeApiKey(ApiKeyReq) returns (ApiKeyResp) {}
   rpc TxnProcsStat(TxnProcsStatReq) returns (TxnProcsStatsProto) {}
+  rpc GetTokenStatus(TokenStatusRequest) returns (TokenStatus) {}
 
   //rpc Echo (EchoRequest) returns (EchoResponse) {} // TEST ONLY
   //rpc UserActivityBidi(stream UserAction) returns (stream UserResponse) {}
@@ -152,6 +153,7 @@ message TokenTradeEventSub {
   string mint = 1;
 }
 
+
 message TokenStatusRequest {
   string mint = 1;
 }
@@ -200,6 +202,18 @@ message TokenStatus {
     common.QuoteKind qoute_kind =8;
     optional uint32 tax_bps = 9;
     string ticker = 10;
+    string name = 11;
+    uint32 base_dec = 12;
+    uint32 quote_dec =13;
+    optional string mint_auth = 14;
+    optional string freeze_auth = 15;
+    repeated Social socials = 16;
+    uint64 base_liq_v = 17;
+    uint64 quote_liq_v = 18;
+}
+message Social {
+  string name =1;
+  string value =2;
 }
 enum MigrationStatus {
   migrated = 0;
