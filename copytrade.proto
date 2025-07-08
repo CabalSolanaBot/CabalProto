@@ -5,6 +5,10 @@ package copytrade;
 import "orders.proto";
 import "common.proto";
 
+message CopytradeCfgId {
+  int64 id = 1;
+} 
+
 message CopyTradeConfigProto {
   optional int64 cfg_id = 1;
   bool is_on = 2;

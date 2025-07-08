@@ -33,3 +33,18 @@ message TransactionProcessors {
     bool slot0 = 7;
     bool astra = 8;
 }
+
+enum TradeSide {
+  BUY = 0;
+  SELL = 1;
+}
+
+enum ProcKind {
+    JITO = 0;
+    CABAL = 1;
+    BLOXROUTE = 2;
+    NOZOMI = 3;
+    NEXTBLOCK = 4;
+    SLOT0 = 5;
+    ASTRA = 6;
+}
