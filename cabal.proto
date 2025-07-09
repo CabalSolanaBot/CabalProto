@@ -135,7 +135,7 @@ message WithdrawRefReq {
   string destination = 1;
 }
 message WithdrawRefResp {
-  string sig = 1;
+  repeated string sigs = 1;
 }
 message GetRefStateReq {}
 
@@ -220,7 +220,6 @@ message FetchInfoResponse {
 
 message UserResponse {
   oneof user_response_kind {
-    TradeResponse trade_status = 1;
     TokenTradeStats trade_stats = 2;
     txncb.LandedTxnState txn_cb =3;
     txncb.TxnConfirmState txn_cs =4;
