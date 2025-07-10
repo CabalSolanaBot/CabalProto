@@ -10,7 +10,7 @@ package txncb;
 message TxnConfirmState {
     repeated string signatures =1;
     ConfirmTradeKind kind = 2;
-    optional int64 order_id = 3; 
+    uint64 slot = 3;
 }
 
 message LandedTxnState {
@@ -31,6 +31,7 @@ message Failed {
     uint32 cu = 3;
     string err = 4;
     string signature =5;
+    common.ProcKind proc =6;
 }
 
 message Confirmed {
@@ -39,6 +40,7 @@ message Confirmed {
     TxnTips tips = 3;
     uint32 cu = 4;
     string signature =5;
+    common.ProcKind proc =6;
 }
 
 message ParsedTrade {
@@ -51,21 +53,24 @@ message ParsedTrade {
 message Buy {
     string mint = 1;
     string ticker = 2;
-    common.TokenLamports base = 3;
+    uint64 base = 3;
     uint64 quote = 4;
-    common.Decimal mc = 5;
-    common.Decimal price = 6;
+    optional string mc = 5;
+    optional string price = 6;
     common.QuoteKind qoute_kind =7;
+    uint32 base_dec = 8;
 }
 
 message Sell {
     string mint = 1;
     string ticker = 2;
-    common.TokenLamports tokens = 3;
+    uint64 base = 3;
     uint64 quote = 4;
-    common.Decimal pnl = 5;
-    common.Decimal mc = 6;
-    common.Decimal price = 7;
+    optional string pnl = 5;
+    optional string mc = 6;
+    optional string price = 7;
+    uint32 base_dec = 8;
+    common.QuoteKind qoute_kind =9;
 }
 
 
@@ -91,28 +96,33 @@ message ConfirmTradeKind {
 }
 
 message Limit{
-  string token = 1;
-  orders.ApiOrder order = 2;
+  string mint = 1;
+  optional string ticker =2;
+  optional string supply_dec = 3;
+  orders.ApiOrder order = 4;
 }
 
 message Swap {
-  string token = 1;
-  TradeKind trade_ty = 2;
+  string mint = 1;
+  optional string ticker =2;
+  TradeKind trade_ty = 3;
 }
 
 message Migration {
-  string token = 1;
-  TradeKind trade_ty = 2;
+  string mint = 1;
+  optional string ticker =2;
+  TradeKind trade_ty = 3;
 }
 
 message Copytrade {
-  int64 id = 1;
-  string config_name = 2;
-  string wallet = 3;
-  string tx_sig = 4;
-  string token = 5;
-  string amount = 6;
-  TradeKind trade_ty = 7;
+  string mint = 1;
+  optional string ticker= 2;
+  int64 id = 3;
+  string config_name = 4;
+  string wallet = 5;
+  string tx_sig = 6;
+  string amount = 7;
+  TradeKind trade_ty = 8;
 }
 
 

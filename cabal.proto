@@ -110,7 +110,7 @@ message TokenPositionsUiReq {
 message TokenPosition {
   string mint = 1;
   string ticker = 2; 
-  string pnl =3;
+  optional string pnl =3;
   uint64 quote_value = 4;
   common.QuoteKind qoute_kind =5;
   uint32 orders_num = 6;

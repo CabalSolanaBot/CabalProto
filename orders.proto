@@ -5,7 +5,12 @@ import "common.proto";
 
 
 
-message Positions {}
+
+message ClearLimitOrders {}
+message ClearLimitOrdersResponse {
+  repeated int64 ids = 1;
+}
+
 
 message DeleteOrders {
   string mint = 1;
@@ -96,10 +101,6 @@ message Amount {
   }
 }
 
-message ClearLimitOrders {}
-message ClearLimitOrdersResponse {
-  repeated int64 ids = 1;
-}
 
 
 
