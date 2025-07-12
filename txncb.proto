@@ -91,11 +91,13 @@ message ConfirmTradeKind {
     Limit limit_order = 1;
     Swap swap = 2;
     Migration migration = 3;
-    Copytrade copytrade = 4;
+    Dev dev = 4;
+    Copytrade copytrade = 5;
+
   }
 }
 
-message Limit{
+message Limit {
   string mint = 1;
   optional string ticker =2;
   optional string supply_dec = 3;
@@ -112,6 +114,13 @@ message Migration {
   string mint = 1;
   optional string ticker =2;
   TradeKind trade_ty = 3;
+}
+
+message Dev {
+  string mint = 1;
+  optional string ticker =2;
+  TradeKind trade_ty = 3;
+  string txn_sig =4;
 }
 
 message Copytrade {
