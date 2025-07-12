@@ -52,7 +52,9 @@ message Target {
       TargetPrice price = 2;
       TargetProfit profit = 3;
       TargetPerc perc = 4;
-      TargetMovingPerc moving_perc = 5;
+      TargetMcap mcap = 5;
+      TargetMovingPerc moving_perc = 6;
+      
   }
 }
 
@@ -77,6 +79,12 @@ message TargetMovingPerc {
 message TargetPerc {
   //CAN BE MORE THAN 10000
   uint64 perc = 1;
+  //LEAVE NONE ON SUBMIT
+  optional float price_target = 2;
+  Direction direction = 3;
+}
+message TargetMcap {
+  float mcap = 1;
   //LEAVE NONE ON SUBMIT
   optional float price_target = 2;
   Direction direction = 3;
