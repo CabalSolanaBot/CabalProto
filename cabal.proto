@@ -36,6 +36,7 @@ service CabalRpc {
   rpc RegisterRef(RegisterRefReq) returns (RegisterRefResp) {}
 
   //Copytrade
+  rpc CtNewCfgDef(copytrade.CreateDefCfg) returns (copytrade.CopyTradeConfigProto);
   rpc CtNewCfg(copytrade.CopyTradeConfigProto) returns (copytrade.GenericSetResponse);
   rpc CtGetCfgs(copytrade.GetCfgIds) returns (copytrade.CtCfgIds);
   rpc CtGetCfg(copytrade.GetCfg) returns (copytrade.CopyTradeConfigProto);
@@ -47,7 +48,8 @@ service CabalRpc {
   rpc CtCfgSetRayCpmm(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
   rpc CtCfgSetPumpAmm(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
   rpc CtCfgSetRayLl(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
-  rpc CtCfgSetUseLimitOrders(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetBuyUseLimitOrders(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetSellUseLimitOrders(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
   rpc CtCfgSetBlacklist(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
   rpc CtCfgSetReverseBuy(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
   rpc CtCfgSetReverseSell(copytrade.BoolFieldRequest) returns (copytrade.GenericSetResponse);
@@ -88,7 +90,9 @@ service CabalRpc {
   // Repeated fields
   rpc CtCfgSetLimitOrders(copytrade.LimitOrdersFieldRequest) returns (copytrade.GenericSetResponse);
   rpc CtCfgSetCopyWallets(copytrade.StringsFieldRequest) returns (copytrade.GenericSetResponse);
+  
   rpc CtCfgSetTokenBuys(copytrade.StringsFieldRequest) returns (copytrade.GenericSetResponse);
+  rpc CtCfgSetTokenSells(copytrade.StringsFieldRequest) returns (copytrade.GenericSetResponse);
 
   // Getters for repeated fields
   rpc CtGetCopyWallets(copytrade.GetRepeatedStringsRequest) returns (copytrade.GetRepeatedStringsResponse);

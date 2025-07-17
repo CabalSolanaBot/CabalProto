@@ -8,6 +8,7 @@ import "common.proto";
 message CopytradeCfgId {
   int64 id = 1;
 } 
+message CreateDefCfg {} 
 
 message CopyTradeConfigProto {
   optional int64 cfg_id = 1;
@@ -25,13 +26,6 @@ message CopyTradeConfigProto {
   uint64 buy_amount_perc_bps = 9;
 
   bool buy_freeze = 10;
-
-  bool pump = 11;
-  bool ray_amm = 12;
-  bool ray_cpmm = 13;
-  bool pump_amm = 14;
-  bool ray_ll = 15;
-  bool moon = 16;
 
   uint64 min_buy = 17;
   uint64 max_buy = 18;
@@ -55,22 +49,32 @@ message CopyTradeConfigProto {
   uint64 min_age = 29;
   uint64 max_age = 30;
 
-  bool use_limit_orders = 31;
-  repeated orders.ApiOrder limit_orders = 32;
+  bool use_buy_limit_orders = 31;
+  bool use_sell_limit_orders = 32;
 
-  repeated string copy_wallets = 33;
-  repeated string token_buys = 34;
+  repeated orders.ApiOrder limit_orders = 33;
 
-  common.TransactionProcessors txn_proc = 35;
+  repeated string copy_wallets = 34;
 
-  bool blacklist = 36;
+  repeated string token_buys = 35;
+  repeated string token_sells = 36;
 
-  uint32 max_slot_latency_buy = 37;
-  uint32 max_slot_latency_sell = 38;
+  common.TransactionProcessors txn_proc = 37;
 
-  bool reverse_buy = 39;
-  bool reverse_sell = 40;
+  bool blacklist = 38;
 
+  uint32 max_slot_latency_buy = 39;
+  uint32 max_slot_latency_sell = 40;
+
+  bool reverse_buy = 41;
+  bool reverse_sell = 42;
+
+  bool pump = 43;
+  bool ray_amm = 44;
+  bool ray_cpmm = 45;
+  bool pump_amm = 46;
+  bool ray_ll = 47;
+  bool moon = 48;
 }
 
 enum CopyTradeBuyMode {
@@ -81,8 +85,9 @@ enum CopyTradeBuyMode {
 }
 enum CopyTradeSellMode {
     ONLY_LIMITS_SELL = 0;
-    FIXED_SELL = 1;
-    PERC_SELL = 2;
+    PERC_SELF_SELL = 1;
+    PERC_MASTER_SELL= 2;
+    SELL_ALL = 3;
 }
 enum FollowBuys {
     OFF_BUYS = 0;
